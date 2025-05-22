@@ -1,0 +1,191 @@
+---
+import NavLink from './NavLink.astro';
+---
+
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a href="/">Your Logo</a>
+  </div>
+
+  <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+
+  <div class="navbar-links" id="navbarLinks">
+    <NavLink href="/" text="Home" />
+    <NavLink href="/about" text="About" />
+    <NavLink href="/services" text="Services" />
+    <NavLink href="/contact" text="Contact" />
+  </div>
+</nav>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.getElementById('navbarToggle');
+    const navLinks = document.getElementById('navbarLinks');
+    const body = document.body;
+
+    if (toggleButton && navLinks) {
+      toggleButton.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        toggleButton.classList.toggle('active');
+        body.classList.toggle('no-scroll');
+      });
+    }
+
+    // Optional: Close nav when a link is clicked
+    navLinks.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (navLinks.classList.contains('active')) {
+          navLinks.classList.remove('active');
+          toggleButton.classList.remove('active');
+          body.classList.remove('no-scroll');
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  /* Universal box-sizing (highly recommended for all projects) */
+  html {
+    box-sizing: border-box;
+  }
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+
+  body.no-scroll {
+    overflow: hidden;
+  }
+
+  /* Reset default margins on body if not already done in a global CSS */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1000;
+  }
+
+  .navbar-brand a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+  }
+
+  .navbar-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .navbar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+  }
+
+  .navbar-toggle .icon-bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 5px 0;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .navbar-toggle.active .icon-bar:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .navbar-toggle.active .icon-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navbar-toggle.active .icon-bar:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
+
+  /* --- Responsive Styles --- */
+  @media (max-width: 768px) {
+    .navbar-links {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      /* Right set to 0 and width 100% with padding inside for proper alignment */
+      right: 0;
+      width: 100%; /* Important: This means 100% of the viewport width */
+      height: 100vh;
+      background-color: #f8f9fa;
+      padding-top: 6rem; /* Make space for header, top:0 is covered by .navbar */
+      padding-left: 2rem; /* Add consistent left padding */
+      padding-right: 2rem; /* Add consistent right padding */
+      padding-bottom: 2rem;
+      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+      align-items: flex-start;
+      gap: 1.5rem;
+      z-index: 999;
+      overflow-y: auto;
+    }
+
+    .navbar-links.active {
+      display: flex;
+      transform: translateX(0);
+    }
+
+    .navbar-toggle {
+      display: block;
+    }
+
+    .navbar-brand {
+      z-index: 1002;
+    }
+
+    /* Adjust the main navbar for mobile if needed, especially if it has horizontal padding */
+    .navbar {
+      padding-left: 1rem; /* Reduce padding on the main bar if it feels too wide */
+      padding-right: 1rem;
+    }
+  }
+</style>
+
+<style>
+  /* Styles for NavLink.astro */
+  /* This style block should ideally be within NavLink.astro itself,
+     but for completeness in one file for troubleshooting, it's here. */
+  .nav-link {
+    color: #333;
+    text-decoration: none;
+    padding: 0.5rem 1rem; /* Keep initial padding for hover effect */
+    transition: color 0.2s ease-in-out;
+    font-size: 1.2rem;
+  }
+
+  .nav-link:hover {
+    color: #007bff;
+  }
+
+  @media (max-width: 768px) {
+    .nav-link {
+      width: 100%; /* Make links take full width of the menu *content area* */
+      padding: 1rem 0; /* Adjust padding for mobile links, no horizontal padding here */
+    }
+  }
+</style>
